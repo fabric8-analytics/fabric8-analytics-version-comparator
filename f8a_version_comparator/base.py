@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Copyright © 2018 Red Hat Inc.
 #
@@ -26,9 +26,10 @@ class Base(metaclass=ABCMeta):
 
     @abstractmethod
     def compare_to(self):
+        """Compare two maven versions."""
         raise NotImplementedError()
-
 
     @abstractmethod
     def is_none(self):
+        """Check if none."""
         raise NotImplementedError()
