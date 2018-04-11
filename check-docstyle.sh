@@ -1,4 +1,4 @@
-directories="src tests"
+directories="f8a_version_comparator tests"
 separate_files="setup.py"
 pass=0
 fail=0
