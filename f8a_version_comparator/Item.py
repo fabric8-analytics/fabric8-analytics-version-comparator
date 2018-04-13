@@ -15,13 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Base class for maven version comparator tasks."""
+"""Item class acting as base class for various item types."""
 
 
 from abc import ABCMeta, abstractmethod
 
 
-class Base(metaclass=ABCMeta):
+class Item(metaclass=ABCMeta):
     """Base class for maven version comparator tasks."""
 
     @abstractmethod
