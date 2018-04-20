@@ -20,12 +20,11 @@
 
 from abc import ABCMeta, abstractmethod
 
-
 class Item(metaclass=ABCMeta):
     """Base class for maven version comparator tasks."""
 
     @abstractmethod
-    def compare_to(self):
+    def compare_to(self, item):
         """Compare two maven versions."""
         raise NotImplementedError()
 
