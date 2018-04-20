@@ -18,25 +18,33 @@
 """Class to implement methods for integer type items"""
 
 from f8a_version_comparator.item import Item
+from f8a_version_comparator.list_item import ListItem
+from f8a_version_comparator.integer_item import IntegerItem
 # TODO: setup logging
 
 class StringItem(Item):
     """String Item class for maven version comparator tasks."""
     qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
-    release_version_index = str(qualifiers.index(""))
+    
     aliases = {
                "ga" : "",
                "final" : "empty",
                "cr" : "rc"
     }
 
+    release_version_index = str(qualifiers.index(""))
+
     def __init__(self, str_version, followed_by_digit):
         """Initializes string value of version.
         :str_value: part of version supplied as string
         """
+    
         if followed_by_digit and len(str_version)==1:
             _decode_char_versions(str_version)
-        
+    
+   
+
+
     _decode_char_versions(value):
         if value.startswith("a"):
             value = "alpha"
@@ -47,22 +55,39 @@ class StringItem(Item):
 
         self.value = aliases.get(value, value)
 
+    
     @staticmethod
-    def comparableQualifier(qualifier):
-        q_index = qualifiers.index(qualifier)
+    def comparable_qualifier(qualifier):
+        q_index = qualifiers.get(qualifier, None)
         q_index_not_found = len(qualifiers) + "-" + qualifier
 
-        return str(q_index) if q_index is not -1 else q_index_not_found
+        return str(q_index) if q_index is not None else q_index_not_found
 
-    @classmethod
-    def compare_to(cls, self, ):
+    def str_cmp(self, val1, val2):
+        if val2.__lt__(val1):
+            return -1
+        if val2.__gt__(val1):
+            return 1
+        return 0
+
+    def compare_to(self, item):
         """Compare two maven versions."""
-        raise NotImplementedError()
+        if item is None:
+            return self.str_cmp(comparable_qualifier(item), release_version_index)# check if this works
+
+        if isinstance(item, IntegerItem):
+            return -1
+        if isinstance(item, StringItem):
+            return self.str_cmp(comparable_qualifier(self.value), comparable_qualifier(item.value) )#need to add get item value
+        if isinstance(item, ListItem):
+            return -1
+        else:
+            raise ValueError("invalid item" + type(item))
 
     @classmethod
     def is_none(self):
         """Check if none."""
-        if self.value is 0:
+        if self.value is release_version_index and self.value is 0:
             return True
 
         return False
