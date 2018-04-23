@@ -17,9 +17,8 @@
 
 """Class to implement methods for integer type items"""
 
-from f8a_version_comparator.item import Item
-from f8a_version_comparator.list_item import ListItem
-from f8a_version_comparator.integer_item import IntegerItem
+from base import Item
+from list_item import ListItem
 # TODO: setup logging
 
 class StringItem(Item):
@@ -43,9 +42,7 @@ class StringItem(Item):
             _decode_char_versions(str_version)
     
    
-
-
-    _decode_char_versions(value):
+    def _decode_char_versions(value):
         if value.startswith("a"):
             value = "alpha"
         elif value.startswith("b"):

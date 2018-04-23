@@ -17,9 +17,9 @@
 
 """Class to implement methods for integer type items"""
 
-from f8a_version_comparator.item import Item
-from f8a_version_comparator.string_item import StringItem
-from f8a_version_comparator.list_item import ListItem
+from base import Item
+from string_item import StringItem
+from list_item import ListItem
 # TODO: setup logging
 
 class IntegerItem(Item):
@@ -29,35 +29,35 @@ class IntegerItem(Item):
         """Initializes integer from string value of version.
         :str_value: part of version supplied as string
         """
-        self.value = int(str_value)
+        self.value = int(str_version)
 
- 	def int_cmp(self, cmp_value):
- 		if self.value.__lt__(cmp_value):
- 			return -1
- 		if self.value.__gt__(cmp_value):
- 			return 1
- 		return 0
+    def int_cmp(self, cmp_value):
+        if self.value.__lt__(cmp_value):
+            return -1
+        if self.value.__gt__(cmp_value):
+            return 1
+        return 0
 
     def compare_to(self, item):
         """Compare two maven versions."""
         if item == None:
-        	0 if self.value==0 else 1
+            0 if self.value==0 else 1
 
         if isinstance(item, IntegerItem):
-        	self.int_cmp(item.value)#check if this value thing works
+            self.int_cmp(item.value)#check if this value thing works
         if isinstance(item, StringItem):
-        	return 1
+            return 1
         if isinstance(item, ListItem):
-        	return 1
+            return 1
         else:
-        	raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + type(item))
 
-     def to_string():
-     	return str(self.value)
+    def to_string():
+        return str(self.value)
 
     @classmethod
     def is_none(self):
         """Check if none."""
         if self.value is None:
-        	return True
-         return False
+            return True
+        return False

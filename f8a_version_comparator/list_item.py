@@ -17,9 +17,7 @@
 
 """Class to implement methods for integer type items"""
 
-from f8a_version_comparator.item import Item
-from f8a_version_comparator.integer_item import IntegerItem
-from f8a_version_comparator.string_item import StringItem
+from base import Item
 # TODO: setup logging
 
 class ListItem(Item):
@@ -39,7 +37,7 @@ class ListItem(Item):
             lastItem = self.arraylist[i]
             if lastItem is None:
                 self.arraylist.pop(i)
-            elif(!isinstance(lastItem)):
+            elif( not isinstance(lastItem)):
                 break
             i-=1
 
@@ -74,7 +72,7 @@ class ListItem(Item):
                 else:
                     l.compare_to(r)
                 if result is not 0:
-                    retirn result
+                    return result
 
             return 0 
         else:
@@ -82,6 +80,7 @@ class ListItem(Item):
 
     def to_string():
         # To implement
+        pass
 
     @classmethod
     def is_none(self):

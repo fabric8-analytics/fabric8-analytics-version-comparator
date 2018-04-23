@@ -1,152 +1,109 @@
-# class ComparableVersion():
+#!/usr/bin/env python
 
-# 	@classmethod
-# 	def parse_version(self, version):
-# 		self.value = version;
+# Copyright © 2018 Red Hat Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# 		v_list = list()
-# 		_start_index = 0 
+"""Class to implement methods for integer type items"""
 
-# 		v_index = 0
+from integer_item import IntegerItem
+from string_item import StringItem
+from list_item import ListItem
 
-# 		qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
-# 		short_qualifiers = { "a" : "alpha", "b" : "beta", "m" : "milestone"}
-# 		aliases = {
-#                "ga" : "",
-#                "final" : "",
-#                "cr" : "rc"
-#    		 }
-# 		while (v_index<len(version)):
-# 			if version[v_index] is '.' or version[v_index] is "-":
-# 				if v_index == _start_index:
-# 					v_list.append(0)
-# 				v_list.append(version[v_index])
-# 				v_index += 1
-# 			# checks if consecutive characters are also digits.
-# 			# If so, it takes series of digit into account
-# 			if version[v_index].isdigit():
+class ComparableVersion():
 
-# 				in_string = version[v_index : v_index + 1]
-# 				length_numerical = 1
-# 				while True:
-# 					if(v_index+length_numerical >= len(version)):
-# 						break
-# 					if version[v_index + length_numerical].isdigit():
-# 						in_string += str(version[v_index + length_numerical])
-						
-# 						length_numerical += 1
-# 					else:
-# 						break
-# 				v_index += length_numerical	
-# 				v_list.append(int(in_string))
-# 			else:
-# 				in_string = version[v_index : v_index + 1]
-# 				length_string = 1
-# 				while True:
-# 					if(v_index+length_string >= len(version)):
-# 						break
-# 					black_list = ['.', '-']
-# 					if version[v_index + length_string] not in black_list:
-# 						if version[v_index] in short_qualifiers.keys():
-# 							if (v_index + 1) < len(version):
-# 								version[v_index + 1].isdigit()
+    def __init__(self, version):
+        self.items = list()
+        self.parse_version(version)
+       
 
-# 						in_string += str(version[v_index + length_string])
-# 						length_string += 1
-# 					else:
-# 						break
-# 				if in_string in qualifiers:
-# 					v_list.append(in_string)
-# 				else:
-# 					str_index = 0
-# 					import pdb
-# 					pdb.set_trace()
-# 					while str_index < len(in_string):
-# 						if in_string[str_index].isdigit():
-# 							v_list.append(int(in_string[str_index]))
-# 						else:
-# 							parse_char = str(in_string[str_index])
-# 							if parse_char in short_qualifiers.keys():
-# 								v_list.append(short_qualifiers.get(parse_char))
-# 							else:
-# 								v_list.append(parse_char)
-# 						str_index +=1
-# 					v_index += length_string
-# 		return v_list
-		
+    def parse_version(self, version):
 
-# def equalize_str_lengths(v1, v2):
+        parse_stack = list()
+        version = version.lower()
+        ref_list = list()
 
-# 	flag = False
-# 	if len(v1) > len(v2):
-# 		diff_index = len(v2)
-# 		max_len = len(v1)
-# 		flag = True
-# 	else:
-# 		diff_index = len(v1)
-# 		max_len = len(v2)
-
-# 	while diff_index < max_len:
-# 		if flag:
-# 			diff_value = v1[diff_index]
-# 			if v1[diff_index] == '.' or v1[diff_index] == "-":
-# 				v2.append(diff_value)
-# 			else:
-# 				v2.append("")
-# 		else:
-# 			diff_value = v2[diff_index]
-# 			if v2[diff_index] == '.' or v2[diff_index] == "-":
-# 				v1.append(diff_value)
-# 			else:
-# 				v1.append("")
-
-# 		diff_index += 1
-
-# def compare_string(s1, s2):
-# 	qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
-# 	aliases = {
-#                "ga" : "",
-#                "final" : "",
-#                "cr" : "rc"
-#     		}
-#     if s1 in aliases:
-#         s1 = aliases.get(s1)
-
-#     if s1 in qualifiers and s2 in qualifiers:
-#     	if qualifiers.index(s1) > qualifiers.index(s2):
-#     		return -1
-#     	elif qualifiers.index(s1) < qualifiers.index(s2):
-#     		return 1
-#     	else:
-#     		return 0
-
-# def compare_item(v1, v2):
-
-#     _loop_index = 0
-#     while _loop_index < len(v1):
-#     	v1_item = v1[_loop_index]
-#     	v2_item = v2[_loop_index]
-#     	if isinstance(v1_item, int) and isinstance(v2_item, int):
-#     		if v1_item < v2_item:
-#     			return 1
-#     		elif v1_item > v2_item:
-#     			return -1
-#     	if isinstance(v1_item, int) and isinstance(v2_item, str):
-#     		return -1
-#     	if isinstance(v1_item, str) and isinstance(v2_item, int):
-#     		return 1
-#     	if isinstance(v1_item, str) and isinstance(v2_item, str):
-#     		str_comp =  compare_string_item(v1_item, v2_item) 
-#     		if str_comp is not 0:
-#     			return str_comp
+        parse_stack.append(ref_list)
 
 
-# if __name__ == "__main__":
-# 	v1 = ComparableVersion.parse_version("1.1a123")
-# 	v2 = ComparableVersion.parse_version("1.alpha")
-# 	print(v1)
-# 	print(v2)
-# 	# if len(v1) != len(v2):
-# 	# 	equalize_str_lengths(v1,v2)
-# 	# item_dict = { "1.11.1" : v1 , "1" : v2}
+        _is_digit = False
 
+        _start_index = 0
+
+        for _ch in range(0, len(version)):
+
+            ver_char = version[_ch]
+
+            if ver_char is ".":
+
+                if _ch==_start_index:
+                    ref_list.append(0)
+                else:
+                    ref_list.append(self.parse_item(_is_digit, version[_start_index : _ch]))
+
+                _start_index = _ch + 1
+
+            elif ver_char=="-":
+                if _ch==_start_index:
+                    ref_list.append(0)
+                else:
+                    ref_list.append(self.parse_item(_is_digit, version[_start_index : _ch]))
+
+                _start_index = _ch + 1 
+                self.items.append(ref_list)
+                ref_list = list()
+                parse_stack.append(ref_list)
+
+            elif ver_char.isdigit():
+                if not _is_digit and _ch > _start_index:
+                    ref_list.add(StringItem(version[_start_index: i ], True))
+                    _start_index = _ch
+
+                    self.items.append(ref_list)
+                    ref_list = list()
+                    parse_stack.append(ref_list)
+                _is_digit = True
+            else:
+                if _is_digit and _ch > _start_index:
+                    ref_list.append(self.parse_item(True, version[_start_index:i]))
+                    _start_index = i
+                    self.items.append(ref_list)
+                    ref_list = list()
+                    parse_stack.append(ref_list)
+                _is_digit = False
+
+        if len(version) > _start_index:
+            ref_list.append(self.parse_item(_is_digit, version[_start_index]))
+
+        # implement list normalization
+        while len(parse_stack)>0:
+            break
+
+        print(self.items)
+
+    def parse_item(self, _is_digit, buf):
+        if _is_digit:
+            return IntegerItem(buf)
+
+        return StringItem(buf, false)
+
+    def compare_to(obj):
+
+        # 
+        pass
+
+if __name__ == "__main__":
+
+    c = ComparableVersion("1-11-1")
+      
