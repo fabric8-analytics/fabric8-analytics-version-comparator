@@ -90,11 +90,12 @@ class ComparableVersion():
 
         return StringItem(buf, False)
 
-    def compare_to(obj):
-
-        # 
-        pass
+    def compare_to(self, obj):
+        return self.items.compare_to(obj.items)
 
 if __name__ == "__main__":
     c = ComparableVersion("1-alpha-1")
+    c1 = ComparableVersion("1.0")
+
+    c.compare_to(c1)
       
