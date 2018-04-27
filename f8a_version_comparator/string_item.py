@@ -23,40 +23,43 @@ from list_item import ListItem
 
 class StringItem(Item):
     """String Item class for maven version comparator tasks."""
-    qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
     
-    aliases = {
-               "ga" : "",
-               "final" : "empty",
-               "cr" : "rc"
-    }
 
-    release_version_index = str(qualifiers.index(""))
+    
 
     def __init__(self, str_version, followed_by_digit):
         """Initializes string value of version.
         :str_value: part of version supplied as string
         """
-    
-        if followed_by_digit and len(str_version)==1:
-            _decode_char_versions(str_version)
-    
-   
-    def _decode_char_versions(value):
-        if value.startswith("a"):
-            value = "alpha"
-        elif value.startswith("b"):
-            value = "beta"
-        elif value.startswith("m"):
-            value = "meta" 
 
-        self.value = aliases.get(value, value)
+        self.qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
+    
+        self.aliases = {
+               "ga" : "",
+               "final" : "empty",
+               "cr" : "rc"
+        }
+
+        self.release_version_index = str(self.qualifiers.index(""))
+        self._decode_char_versions(str_version, followed_by_digit)
+        
+   
+    def _decode_char_versions(self, value, followed_by_digit):
+        if followed_by_digit and len(str_version)==1:
+            if value.startswith("a"):
+                value = "alpha"
+            elif value.startswith("b"):
+                value = "beta"
+            elif value.startswith("m"):
+                value = "meta" 
+
+        self.value = self.aliases.get(value, value)
 
     
     @staticmethod
     def comparable_qualifier(qualifier):
-        q_index = qualifiers.get(qualifier, None)
-        q_index_not_found = len(qualifiers) + "-" + qualifier
+        q_index = self.qualifiers.get(qualifier, None)
+        q_index_not_found = len(self.qualifiers) + "-" + qualifier
 
         return str(q_index) if q_index is not None else q_index_not_found
 
@@ -80,6 +83,9 @@ class StringItem(Item):
             return -1
         else:
             raise ValueError("invalid item" + type(item))
+
+    def to_string(self):
+        return str(self.value)
 
     @classmethod
     def is_none(self):

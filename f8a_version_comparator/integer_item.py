@@ -52,7 +52,7 @@ class IntegerItem(Item):
         else:
             raise ValueError("invalid item" + type(item))
 
-    def to_string():
+    def to_string(self):
         return str(self.value)
 
     @classmethod

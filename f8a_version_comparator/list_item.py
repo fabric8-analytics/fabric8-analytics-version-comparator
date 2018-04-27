@@ -23,15 +23,20 @@ from base import Item
 class ListItem(Item):
     """String Item class for maven version comparator tasks."""
 
-
     def __init__(self):
         """Initializes string value of version.
         :str_value: part of version supplied as string
-        """
-        self.arraylist = list()
-    
-   
-    def normalize():
+        """  
+        self.array_list = list()
+
+    def add_item(self, item):
+        arr_list = self.array_list
+        arr_list.append(item)
+
+    def get_list(self):
+        return self.array_list
+
+    def normalize(self):
         i = len(self.arraylist)
         while(i>=0):
             lastItem = self.arraylist[i]

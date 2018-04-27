@@ -24,23 +24,19 @@ from list_item import ListItem
 class ComparableVersion():
 
     def __init__(self, version):
-        self.items = list()
+        
         self.parse_version(version)
        
 
     def parse_version(self, version):
-
         parse_stack = list()
         version = version.lower()
-        ref_list = list()
-
-        parse_stack.append(ref_list)
-
-
+        ref_list = ListItem()
+        self.items = ref_list
         _is_digit = False
 
         _start_index = 0
-
+        
         for _ch in range(0, len(version)):
 
             ver_char = version[_ch]
@@ -48,55 +44,51 @@ class ComparableVersion():
             if ver_char is ".":
 
                 if _ch==_start_index:
-                    ref_list.append(0)
+                    ref_list.add_item(0)
                 else:
-                    ref_list.append(self.parse_item(_is_digit, version[_start_index : _ch]))
+                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index : _ch]))
 
                 _start_index = _ch + 1
 
             elif ver_char=="-":
-                if _ch==_start_index:
-                    ref_list.append(0)
+                if _ch ==_start_index:
+                    ref_list.add_item(0)    
                 else:
-                    ref_list.append(self.parse_item(_is_digit, version[_start_index : _ch]))
-
+                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index : _ch]))
                 _start_index = _ch + 1 
-                self.items.append(ref_list)
-                ref_list = list()
-                parse_stack.append(ref_list)
 
+                temp = ListItem()
+                ref_list.add_item(temp)
+                ref_list = temp
             elif ver_char.isdigit():
                 if not _is_digit and _ch > _start_index:
-                    ref_list.add(StringItem(version[_start_index: i ], True))
+                    ref_list.add_item(StringItem(version[_start_index: i ], True))
                     _start_index = _ch
 
-                    self.items.append(ref_list)
-                    ref_list = list()
-                    parse_stack.append(ref_list)
+                    temp = ListItem()
+                    ref_list.add_item(temp)
+                    ref_list = temp
                 _is_digit = True
             else:
                 if _is_digit and _ch > _start_index:
-                    ref_list.append(self.parse_item(True, version[_start_index:i]))
+                    ref_list.add_item(self.parse_item(True, version[_start_index:i]))
                     _start_index = i
-                    self.items.append(ref_list)
-                    ref_list = list()
-                    parse_stack.append(ref_list)
+                    stemp = ListItem()
+                    ref_list.add_item(temp)
+                    ref_list = temp
                 _is_digit = False
 
         if len(version) > _start_index:
-            ref_list.append(self.parse_item(_is_digit, version[_start_index]))
+            ref_list.add_item(self.parse_item(_is_digit, version[_start_index]))
 
-        # implement list normalization
-        while len(parse_stack)>0:
-            break
+        return self.items.get_list()
 
-        print(self.items)
 
     def parse_item(self, _is_digit, buf):
         if _is_digit:
             return IntegerItem(buf)
 
-        return StringItem(buf, false)
+        return StringItem(buf, False)
 
     def compare_to(obj):
 
@@ -104,6 +96,5 @@ class ComparableVersion():
         pass
 
 if __name__ == "__main__":
-
-    c = ComparableVersion("1-11-1")
+    c = ComparableVersion("1-alpha-1")
       
