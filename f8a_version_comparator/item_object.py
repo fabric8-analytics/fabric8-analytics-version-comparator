@@ -42,7 +42,7 @@ class IntegerItem(Item):
             0 if self.value==0 else 1
 
         if isinstance(item, IntegerItem):
-            self.int_cmp(item.value)#check if this value thing works
+            return self.int_cmp(item.value)#check if this value thing works
         if isinstance(item, StringItem):
             return 1
         if isinstance(item, ListItem):
@@ -162,8 +162,6 @@ class ListItem(Item):
 
     def compare_to(self, item):
         """Compare two maven versions."""
-        import pdb
-        pdb.set_trace()
         if item is None:
             if len(self.array_list)==0:
                 return 0
@@ -175,22 +173,22 @@ class ListItem(Item):
         if isinstance(item, StringItem):
             return 1
         if isinstance(item, ListItem):
-            left_iter = iter(self.arraylist)
+            left_iter = iter(self.array_list)
             right_iter = iter(item.get_list())
 
             while(True):
-                l = next(left_iter, None)
-                r = next(right_iter, None)
-                if l is None and r is None:
+                l_obj = next(left_iter, None)
+                r_obj = next(right_iter, None)
+                if l_obj is None and r_obj is None:
                     break
                 result = 0 
-                if l is None:
-                    if r is None:
+                if l_obj is None:
+                    if r_obj is None:
                         result = 0 
                     else:
-                        -1 * r.compare_to(l)
+                       result =  -1 * r_obj.compare_to(l_obj)
                 else:
-                    l.compare_to(r)
+                    result = l_obj.compare_to(r_obj)
                 if result is not 0:
                     return result
 
