@@ -17,9 +17,9 @@
 
 """Class to implement methods for integer type items"""
 
-from item_object import IntegerItem
-from item_object import StringItem
-from item_object import ListItem
+from .item_object import IntegerItem
+from .item_object import StringItem
+from .item_object import ListItem
 
 class ComparableVersion():
 
@@ -94,9 +94,9 @@ class ComparableVersion():
 
         return self.items.compare_to(obj.items)
 
-if __name__ == "__main__":
-    c = ComparableVersion("1-alpha-1")
-    c1 = ComparableVersion("1.0")
+# if __name__ == "__main__":
+#     c = ComparableVersion("1-alpha-1")
+#     c1 = ComparableVersion("1.0")
 
-    print(c.compare_to(c1))
-      
+#     print(c.compare_to(c1))
+#       

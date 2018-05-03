@@ -17,7 +17,7 @@
 
 """Class to implement methods for integer type items"""
 
-from base import Item
+from .base import Item
 # TODO: setup logging
 
 class IntegerItem(Item):
