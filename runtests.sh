@@ -17,9 +17,8 @@ function prepare_venv() {
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
-`which pip3` install git+https://github.com/GeetikaBatra/fabric8-analytics-version-comparator.git
 `which pip3` install pytest
 `which pip3` install pytest-cov
 
 
-PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=fabric8-analytics-version-comparator/ --cov-report term-missing -vv tests/
+PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=f8a_version_comparator/ --cov-report term-missing -vv tests/
