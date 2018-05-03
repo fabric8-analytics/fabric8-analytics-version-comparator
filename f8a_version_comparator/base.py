@@ -20,6 +20,7 @@
 
 from abc import ABCMeta, abstractmethod
 
+
 class Item(metaclass=ABCMeta):
     """Base class for maven version comparator tasks."""
 

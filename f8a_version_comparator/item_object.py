@@ -20,6 +20,7 @@
 from .base import Item
 # TODO: setup logging
 
+
 class IntegerItem(Item):
     """Integer Item class for maven version comparator tasks."""
 
@@ -39,10 +40,10 @@ class IntegerItem(Item):
     def compare_to(self, item):
         """Compare two maven versions."""
         if item == None:
-            0 if self.value==0 else 1
+            0 if self.value == 0 else 1
 
         if isinstance(item, IntegerItem):
-            return self.int_cmp(item.value)#check if this value thing works
+            return self.int_cmp(item.value)  # check if this value thing works
         if isinstance(item, StringItem):
             return 1
         if isinstance(item, ListItem):
@@ -62,7 +63,7 @@ class IntegerItem(Item):
 
 
 class StringItem(Item):
-    """String Item class for maven version comparator tasks."""  
+    """String Item class for maven version comparator tasks."""
 
     def __init__(self, str_version, followed_by_digit):
         """Initializes string value of version.
@@ -70,29 +71,27 @@ class StringItem(Item):
         """
 
         self.qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
-    
+
         self.aliases = {
-               "ga" : "",
-               "final" : "empty",
-               "cr" : "rc"
+               "ga": "",
+               "final": "empty",
+               "cr": "rc"
         }
 
         self.release_version_index = str(self.qualifiers.index(""))
         self._decode_char_versions(str_version, followed_by_digit)
-        
-   
+
     def _decode_char_versions(self, value, followed_by_digit):
-        if followed_by_digit and len(str_version)==1:
+        if followed_by_digit and len(str_version) == 1:
             if value.startswith("a"):
                 value = "alpha"
             elif value.startswith("b"):
                 value = "beta"
             elif value.startswith("m"):
-                value = "meta" 
+                value = "meta"
 
         self.value = self.aliases.get(value, value)
 
-    
     @staticmethod
     def comparable_qualifier(qualifier):
         q_index = self.qualifiers.get(qualifier, None)
@@ -110,12 +109,14 @@ class StringItem(Item):
     def compare_to(self, item):
         """Compare two maven versions."""
         if item is None:
-            return self.str_cmp(comparable_qualifier(item), release_version_index)# check if this works
+            # check if this works
+            return self.str_cmp(comparable_qualifier(item), release_version_index)
 
         if isinstance(item, IntegerItem):
             return -1
         if isinstance(item, StringItem):
-            return self.str_cmp(comparable_qualifier(self.value), comparable_qualifier(item.value) )#need to add get item value
+            # need to add get item value
+            return self.str_cmp(comparable_qualifier(self.value), comparable_qualifier(item.value))
         if isinstance(item, ListItem):
             return -1
         else:
@@ -139,7 +140,7 @@ class ListItem(Item):
     def __init__(self):
         """Initializes string value of version.
         :str_value: part of version supplied as string
-        """  
+        """
         self.array_list = list()
 
     def add_item(self, item):
@@ -151,19 +152,18 @@ class ListItem(Item):
 
     def normalize(self):
         i = len(self.arraylist)
-        while(i>=0):
+        while(i >= 0):
             lastItem = self.arraylist[i]
             if lastItem is None:
                 self.arraylist.pop(i)
-            elif( not isinstance(lastItem)):
+            elif(not isinstance(lastItem)):
                 break
-            i-=1
-
+            i -= 1
 
     def compare_to(self, item):
         """Compare two maven versions."""
         if item is None:
-            if len(self.array_list)==0:
+            if len(self.array_list) == 0:
                 return 0
             first = self.array_list[0]
             return first.compareTo(None)
@@ -181,18 +181,18 @@ class ListItem(Item):
                 r_obj = next(right_iter, None)
                 if l_obj is None and r_obj is None:
                     break
-                result = 0 
+                result = 0
                 if l_obj is None:
                     if r_obj is None:
-                        result = 0 
+                        result = 0
                     else:
-                       result =  -1 * r_obj.compare_to(l_obj)
+                        result = -1 * r_obj.compare_to(l_obj)
                 else:
                     result = l_obj.compare_to(r_obj)
                 if result is not 0:
                     return result
 
-            return 0 
+            return 0
         else:
             raise ValueError("invalid item" + type(item))
 
@@ -207,4 +207,3 @@ class ListItem(Item):
             return True
 
         return False
-

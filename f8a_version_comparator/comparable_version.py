@@ -21,12 +21,12 @@ from .item_object import IntegerItem
 from .item_object import StringItem
 from .item_object import ListItem
 
+
 class ComparableVersion():
 
     def __init__(self, version):
-        
+
         self.parse_version(version)
-       
 
     def parse_version(self, version):
         parse_stack = list()
@@ -36,33 +36,33 @@ class ComparableVersion():
         _is_digit = False
 
         _start_index = 0
-        
+
         for _ch in range(0, len(version)):
 
             ver_char = version[_ch]
 
             if ver_char is ".":
 
-                if _ch==_start_index:
+                if _ch == _start_index:
                     ref_list.add_item(0)
                 else:
-                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index : _ch]))
+                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index: _ch]))
 
                 _start_index = _ch + 1
 
-            elif ver_char=="-":
-                if _ch ==_start_index:
-                    ref_list.add_item(0)    
+            elif ver_char == "-":
+                if _ch == _start_index:
+                    ref_list.add_item(0)
                 else:
-                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index : _ch]))
-                _start_index = _ch + 1 
+                    ref_list.add_item(self.parse_item(_is_digit, version[_start_index: _ch]))
+                _start_index = _ch + 1
 
                 temp = ListItem()
                 ref_list.add_item(temp)
                 ref_list = temp
             elif ver_char.isdigit():
                 if not _is_digit and _ch > _start_index:
-                    ref_list.add_item(StringItem(version[_start_index: i ], True))
+                    ref_list.add_item(StringItem(version[_start_index: i], True))
                     _start_index = _ch
 
                     temp = ListItem()
@@ -83,7 +83,6 @@ class ComparableVersion():
 
         return self.items.get_list()
 
-
     def parse_item(self, _is_digit, buf):
         if _is_digit:
             return IntegerItem(buf)
@@ -99,4 +98,4 @@ class ComparableVersion():
 #     c1 = ComparableVersion("1.0")
 
 #     print(c.compare_to(c1))
-#       
+#
