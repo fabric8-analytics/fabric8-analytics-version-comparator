@@ -105,18 +105,19 @@ class StringItem(Item):
 
     def str_cmp(self, val1, val2):
         """Compare two strings."""
-        if val2.__lt__(val1):
+
+        if val1.__lt__(val2):
             return -1
-        if val2.__gt__(val1):
+        if val1.__gt__(val2):
             return 1
         return 0
 
     def compare_to(self, item):
         """Compare two maven versions."""
-        
-        if item is None:
-            return self.str_cmp(self.comparable_qualifier(self.value), self.release_version_index)
 
+        if item is None:
+            temp = self.str_cmp(self.comparable_qualifier(self.value), self.release_version_index)
+            return temp
         if isinstance(item, IntegerItem):
             return -1
         if isinstance(item, StringItem):
@@ -158,13 +159,18 @@ class ListItem(Item):
 
     def normalize(self):
         """Remove trailing items: 0, "", empty list."""
+        red_list = [0, None, ""]
         i = len(self.array_list) - 1
         while(i >= 0):
             lastItem = self.array_list[i]
-            if lastItem is None:
-                self.array_list.pop(i)
-            elif(not isinstance(lastItem, ListItem)):
-                break
+            
+            if(not isinstance(lastItem, ListItem)):
+                
+                if lastItem.value in red_list:
+                    self.array_list.pop(i)
+                else:
+                    break
+                    
             i = i - 1
 
     def compare_to(self, item):
