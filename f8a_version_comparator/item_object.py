@@ -41,7 +41,7 @@ class IntegerItem(Item):
     def compare_to(self, item):
         """Compare two maven versions."""
         if item == None:
-            0 if self.value == 0 else 1
+            return 0 if self.value == 0 else 1
 
         if isinstance(item, IntegerItem):
             return self.int_cmp(item.value)  # check if this value thing works
@@ -97,6 +97,7 @@ class StringItem(Item):
     def comparable_qualifier(self, qualifier):
         """Get qualifier that is comparable."""
 
+        q_index = None
         if qualifier in self.qualifiers:
             q_index = self.qualifiers.index(qualifier)
         q_index_not_found = str(len(self.qualifiers)) + "-" + qualifier
@@ -121,7 +122,7 @@ class StringItem(Item):
         if isinstance(item, IntegerItem):
             return -1
         if isinstance(item, StringItem):
-            return self.str_cmp(self.comparable_qualifier(self.value), comparable_qualifier(item.value))
+            return self.str_cmp(self.comparable_qualifier(self.value), self.comparable_qualifier(item.value))
         if isinstance(item, ListItem):
             return -1
         else:
@@ -170,7 +171,7 @@ class ListItem(Item):
                     self.array_list.pop(i)
                 else:
                     break
-                    
+
             i = i - 1
 
     def compare_to(self, item):

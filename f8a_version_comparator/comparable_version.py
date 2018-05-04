@@ -65,7 +65,7 @@ class ComparableVersion():
                 self.parse_stack.append(ref_list)
             elif ver_char.isdigit():
                 if not _is_digit and _ch > _start_index:
-                    ref_list.add_item(StringItem(version[_start_index: i], True))
+                    ref_list.add_item(StringItem(version[_start_index: _ch], True))
                     _start_index = _ch
 
                     temp = ListItem()
@@ -75,9 +75,9 @@ class ComparableVersion():
                 _is_digit = True
             else:
                 if _is_digit and _ch > _start_index:
-                    ref_list.add_item(self.parse_item(True, version[_start_index:i]))
-                    _start_index = i
-                    stemp = ListItem()
+                    ref_list.add_item(self.parse_item(True, version[_start_index:_ch]))
+                    _start_index = _ch
+                    temp = ListItem()
                     ref_list.add_item(temp)
                     ref_list = temp
                     self.parse_stack.append(ref_list)
@@ -86,7 +86,7 @@ class ComparableVersion():
         if len(version) > _start_index:
             ref_list.add_item(self.parse_item(_is_digit, version[_start_index]))
 
-        
+
         while len(self.parse_stack) > 0:
             ref_list = self.parse_stack.pop()
             ref_list.normalize()
