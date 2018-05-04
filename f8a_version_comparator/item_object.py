@@ -31,6 +31,7 @@ class IntegerItem(Item):
         self.value = int(str_version)
 
     def int_cmp(self, cmp_value):
+        """Compare two integers."""
         if self.value.__lt__(cmp_value):
             return -1
         if self.value.__gt__(cmp_value):
@@ -52,9 +53,9 @@ class IntegerItem(Item):
             raise ValueError("invalid item" + type(item))
 
     def to_string(self):
+        """Returns string value of version."""
         return str(self.value)
 
-    @classmethod
     def is_none(self):
         """Check if none."""
         if self.value is None:
@@ -82,6 +83,7 @@ class StringItem(Item):
         self._decode_char_versions(str_version, followed_by_digit)
 
     def _decode_char_versions(self, value, followed_by_digit):
+        """Decodes short forms of versions."""
         if followed_by_digit and len(str_version) == 1:
             if value.startswith("a"):
                 value = "alpha"
@@ -92,14 +94,17 @@ class StringItem(Item):
 
         self.value = self.aliases.get(value, value)
 
-    @staticmethod
-    def comparable_qualifier(qualifier):
-        q_index = self.qualifiers.get(qualifier, None)
-        q_index_not_found = len(self.qualifiers) + "-" + qualifier
+    def comparable_qualifier(self, qualifier):
+        """Get qualifier that is comparable."""
+
+        if qualifier in self.qualifiers:
+            q_index = self.qualifiers.index(qualifier)
+        q_index_not_found = str(len(self.qualifiers)) + "-" + qualifier
 
         return str(q_index) if q_index is not None else q_index_not_found
 
     def str_cmp(self, val1, val2):
+        """Compare two strings."""
         if val2.__lt__(val1):
             return -1
         if val2.__gt__(val1):
@@ -108,15 +113,14 @@ class StringItem(Item):
 
     def compare_to(self, item):
         """Compare two maven versions."""
+        
         if item is None:
-            # check if this works
-            return self.str_cmp(comparable_qualifier(item), release_version_index)
+            return self.str_cmp(self.comparable_qualifier(self.value), self.release_version_index)
 
         if isinstance(item, IntegerItem):
             return -1
         if isinstance(item, StringItem):
-            # need to add get item value
-            return self.str_cmp(comparable_qualifier(self.value), comparable_qualifier(item.value))
+            return self.str_cmp(self.comparable_qualifier(self.value), comparable_qualifier(item.value))
         if isinstance(item, ListItem):
             return -1
         else:
@@ -144,21 +148,24 @@ class ListItem(Item):
         self.array_list = list()
 
     def add_item(self, item):
+        """Adds item to array list."""
         arr_list = self.array_list
         arr_list.append(item)
 
     def get_list(self):
+        """Get object list items."""
         return self.array_list
 
     def normalize(self):
-        i = len(self.arraylist)
+        """Remove trailing items: 0, "", empty list."""
+        i = len(self.array_list) - 1
         while(i >= 0):
-            lastItem = self.arraylist[i]
+            lastItem = self.array_list[i]
             if lastItem is None:
-                self.arraylist.pop(i)
-            elif(not isinstance(lastItem)):
+                self.array_list.pop(i)
+            elif(not isinstance(lastItem, ListItem)):
                 break
-            i -= 1
+            i = i - 1
 
     def compare_to(self, item):
         """Compare two maven versions."""
@@ -166,7 +173,7 @@ class ListItem(Item):
             if len(self.array_list) == 0:
                 return 0
             first = self.array_list[0]
-            return first.compareTo(None)
+            return first.compare_to(None)
 
         if isinstance(item, IntegerItem):
             return -1
@@ -200,7 +207,6 @@ class ListItem(Item):
         # To implement
         pass
 
-    @classmethod
     def is_none(self):
         """Check if none."""
         if len(self.arraylist) is o:

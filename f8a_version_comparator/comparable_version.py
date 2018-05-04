@@ -14,25 +14,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-"""Class to implement methods for integer type items"""
-
 from .item_object import IntegerItem
 from .item_object import StringItem
 from .item_object import ListItem
 
 
 class ComparableVersion():
+    """Class for Comaparable Version."""
 
     def __init__(self, version):
-
+        """Initializes comparable version class.
+        :version: Version supplied as a string
+        """
         self.parse_version(version)
 
     def parse_version(self, version):
-        parse_stack = list()
+        """ Parse version."""
+        self.parse_stack = list()
         version = version.lower()
         ref_list = ListItem()
         self.items = ref_list
+        self.parse_stack.append(ref_list)
         _is_digit = False
 
         _start_index = 0
@@ -60,6 +62,7 @@ class ComparableVersion():
                 temp = ListItem()
                 ref_list.add_item(temp)
                 ref_list = temp
+                self.parse_stack.append(ref_list)
             elif ver_char.isdigit():
                 if not _is_digit and _ch > _start_index:
                     ref_list.add_item(StringItem(version[_start_index: i], True))
@@ -68,6 +71,7 @@ class ComparableVersion():
                     temp = ListItem()
                     ref_list.add_item(temp)
                     ref_list = temp
+                    self.parse_stack.append(ref_list)
                 _is_digit = True
             else:
                 if _is_digit and _ch > _start_index:
@@ -76,26 +80,25 @@ class ComparableVersion():
                     stemp = ListItem()
                     ref_list.add_item(temp)
                     ref_list = temp
+                    self.parse_stack.append(ref_list)
                 _is_digit = False
 
         if len(version) > _start_index:
             ref_list.add_item(self.parse_item(_is_digit, version[_start_index]))
 
+        while len(self.parse_stack) > 0:
+            ref_list = self.parse_stack.pop()
+            ref_list.normalize()
+
         return self.items.get_list()
 
     def parse_item(self, _is_digit, buf):
+        """Wrap items in version in respective object class."""
         if _is_digit:
             return IntegerItem(buf)
 
         return StringItem(buf, False)
 
     def compare_to(self, obj):
-
+        """Compare two comaparable version objects."""
         return self.items.compare_to(obj.items)
-
-# if __name__ == "__main__":
-#     c = ComparableVersion("1-alpha-1")
-#     c1 = ComparableVersion("1.0")
-
-#     print(c.compare_to(c1))
-#
