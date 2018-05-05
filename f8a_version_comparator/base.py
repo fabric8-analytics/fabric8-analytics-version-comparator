@@ -27,9 +27,7 @@ class Item(metaclass=ABCMeta):
     @abstractmethod
     def compare_to(self, item):
         """Compare two maven versions."""
-        raise NotImplementedError()
 
     @abstractmethod
     def is_none(self):
         """Check if none."""
-        raise NotImplementedError()
