@@ -84,7 +84,7 @@ class ComparableVersion():
                 _is_digit = False
 
         if len(version) > _start_index:
-            ref_list.add_item(self.parse_item(_is_digit, version[_start_index]))
+            ref_list.add_item(self.parse_item(_is_digit, version[_start_index:]))
 
 
         while len(self.parse_stack) > 0:

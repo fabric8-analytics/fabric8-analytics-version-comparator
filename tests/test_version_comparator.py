@@ -37,7 +37,8 @@ def test_comparisons():
     check_version_equal( "1", "1-0" )
     check_version_equal( "1", "1.0-0" )
     check_version_equal( "1.0", "1.0-0" )
-       #no separator between number and character
+
+    #no separator between number and character
     check_version_equal( "1a", "1-a" )
     check_version_equal( "1a", "1.0-a" )
     check_version_equal( "1a", "1.0.0-a" )
@@ -48,6 +49,38 @@ def test_comparisons():
     check_version_equal( "1x", "1.0.0-x" )
     check_version_equal( "1.0x", "1-x" )
     check_version_equal( "1.0.0x", "1-x" )
+
+    #aliases
+    check_version_equal( "1ga", "1" )
+    check_version_equal( "1final", "1" )
+    check_version_equal( "1cr", "1rc" )
+
+    #special "aliases" a, b and m for alpha, beta and milestone
+    check_version_equal( "1a1", "1-alpha-1" )    
+    check_version_equal( "1b2", "1-beta-2" )  
+    check_version_equal( "1m3", "1-milestone-3" ) 
+
+    #case insensitive
+    check_version_equal( "1X", "1x" )
+    check_version_equal( "1A", "1a" )
+    check_version_equal( "1B", "1b" )
+    check_version_equal( "1M", "1m" )
+    check_version_equal( "1Ga", "1" )
+    check_version_equal( "1GA", "1" )
+    check_version_equal( "1Final", "1" )
+    check_version_equal( "1FinaL", "1" )
+    check_version_equal( "1FINAL", "1" )
+    check_version_equal( "1Cr", "1Rc" )
+    check_version_equal( "1cR", "1rC" )
+    check_version_equal( "1m3", "1Milestone3" )
+    check_version_equal( "1m3", "1MileStone3" )
+    check_version_equal( "1m3", "1MILESTONE3" )
+
+
+    check_version_order("6.1.0rc3", "6.1.0")
+    check_version_order("6.1.0rc3", "6.1H.5-beta")
+    check_version_order("6.1.0", "6.1H.5-beta")
+    
 
 if __name__ == '__main__':
     test_comparisons()

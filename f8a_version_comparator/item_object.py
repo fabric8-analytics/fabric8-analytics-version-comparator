@@ -75,7 +75,7 @@ class StringItem(Item):
 
         self.aliases = {
                "ga": "",
-               "final": "empty",
+               "final": "",
                "cr": "rc"
         }
 
@@ -84,13 +84,13 @@ class StringItem(Item):
 
     def _decode_char_versions(self, value, followed_by_digit):
         """Decodes short forms of versions."""
-        if followed_by_digit and len(str_version) == 1:
+        if followed_by_digit and len(value) == 1:
             if value.startswith("a"):
                 value = "alpha"
             elif value.startswith("b"):
                 value = "beta"
             elif value.startswith("m"):
-                value = "meta"
+                value = "milestone"
 
         self.value = self.aliases.get(value, value)
 
