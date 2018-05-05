@@ -14,6 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Author: Geetika Batra <gbatra@redhat.com>
+#
+
+"""Module to implement Comparable Version class."""
+
 from .item_object import IntegerItem
 from .item_object import StringItem
 from .item_object import ListItem
@@ -23,13 +29,14 @@ class ComparableVersion():
     """Class for Comaparable Version."""
 
     def __init__(self, version):
-        """Initializes comparable version class.
+        """Initialize comparable version class.
+
         :version: Version supplied as a string
         """
         self.parse_version(version)
 
     def parse_version(self, version):
-        """ Parse version."""
+        """Parse version."""
         self.parse_stack = list()
         version = version.lower()
         ref_list = ListItem()

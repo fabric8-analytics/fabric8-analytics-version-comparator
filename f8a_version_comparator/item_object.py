@@ -14,8 +14,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Author: Geetika Batra <gbatra@redhat.com>
+#
 
-"""Class to implement methods for integer type items"""
+"""Module to implement methods item types."""
 
 from .base import Item
 # TODO: setup logging
@@ -25,7 +28,8 @@ class IntegerItem(Item):
     """Integer Item class for maven version comparator tasks."""
 
     def __init__(self, str_version):
-        """Initializes integer from string value of version.
+        """Initialize integer from string value of version.
+
         :str_value: part of version supplied as string
         """
         self.value = int(str_version)
@@ -53,7 +57,7 @@ class IntegerItem(Item):
             raise ValueError("invalid item" + type(item))
 
     def to_string(self):
-        """Returns string value of version."""
+        """Return string value of version."""
         return str(self.value)
 
     def is_none(self):
@@ -67,10 +71,10 @@ class StringItem(Item):
     """String Item class for maven version comparator tasks."""
 
     def __init__(self, str_version, followed_by_digit):
-        """Initializes string value of version.
+        """Initialize string value of version.
+
         :str_value: part of version supplied as string
         """
-
         self.qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
 
         self.aliases = {
@@ -83,7 +87,7 @@ class StringItem(Item):
         self._decode_char_versions(str_version, followed_by_digit)
 
     def _decode_char_versions(self, value, followed_by_digit):
-        """Decodes short forms of versions."""
+        """Decode short forms of versions."""
         if followed_by_digit and len(value) == 1:
             if value.startswith("a"):
                 value = "alpha"
@@ -96,7 +100,6 @@ class StringItem(Item):
 
     def comparable_qualifier(self, qualifier):
         """Get qualifier that is comparable."""
-
         q_index = None
         if qualifier in self.qualifiers:
             q_index = self.qualifiers.index(qualifier)
@@ -106,7 +109,6 @@ class StringItem(Item):
 
     def str_cmp(self, val1, val2):
         """Compare two strings."""
-
         if val1.__lt__(val2):
             return -1
         if val1.__gt__(val2):
@@ -115,7 +117,6 @@ class StringItem(Item):
 
     def compare_to(self, item):
         """Compare two maven versions."""
-
         if item is None:
             temp = self.str_cmp(self.comparable_qualifier(self.value), self.release_version_index)
             return temp
@@ -132,6 +133,7 @@ class StringItem(Item):
             raise ValueError("invalid item" + type(item))
 
     def to_string(self):
+        """Return value in string form."""
         return str(self.value)
 
     @classmethod
@@ -147,13 +149,11 @@ class ListItem(Item):
     """String Item class for maven version comparator tasks."""
 
     def __init__(self):
-        """Initializes string value of version.
-        :str_value: part of version supplied as string
-        """
+        """Initialize string value of version."""
         self.array_list = list()
 
     def add_item(self, item):
-        """Adds item to array list."""
+        """Add item to array list."""
         arr_list = self.array_list
         arr_list.append(item)
 
