@@ -40,7 +40,7 @@ class IntegerItem(Item):
 
     def compare_to(self, item):
         """Compare two maven versions."""
-        if item == None:
+        if item is None:
             return 0 if self.value == 0 else 1
 
         if isinstance(item, IntegerItem):
@@ -122,7 +122,10 @@ class StringItem(Item):
         if isinstance(item, IntegerItem):
             return -1
         if isinstance(item, StringItem):
-            return self.str_cmp(self.comparable_qualifier(self.value), self.comparable_qualifier(item.value))
+            return self.str_cmp(
+                self.comparable_qualifier(
+                    self.value), self.comparable_qualifier(
+                    item.value))
         if isinstance(item, ListItem):
             return -1
         else:
@@ -164,9 +167,9 @@ class ListItem(Item):
         i = len(self.array_list) - 1
         while(i >= 0):
             lastItem = self.array_list[i]
-            
+
             if(not isinstance(lastItem, ListItem)):
-                
+
                 if lastItem.value in red_list:
                     self.array_list.pop(i)
                 else:
@@ -209,10 +212,6 @@ class ListItem(Item):
             return 0
         else:
             raise ValueError("invalid item" + type(item))
-
-    def to_string():
-        # To implement
-        pass
 
     def is_none(self):
         """Check if none."""
