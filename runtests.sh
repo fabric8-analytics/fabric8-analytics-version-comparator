@@ -1,4 +1,5 @@
 #!/bin/bash -ex
+chmod +x runtests.sh
 
 export PYTHONPATH=`pwd`/fabric8-analytics-version-comparator
 echo "Create Virtualenv for Python deps ..."

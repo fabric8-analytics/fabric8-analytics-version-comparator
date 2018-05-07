@@ -1,17 +1,16 @@
 # Copyright © 2018 Red Hat Inc.
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
 # Author: Geetika Batra <gbatra@redhat.com>
 #
@@ -28,7 +27,7 @@ class IntegerItem(Item):
     def __init__(self, str_version):
         """Initialize integer from string value of version.
 
-        :str_value: part of version supplied as string
+        :str_version: part of version supplied as string
         """
         self.value = int(str_version)
 
@@ -58,12 +57,6 @@ class IntegerItem(Item):
         """Return string value of version."""
         return str(self.value)
 
-    def is_none(self):
-        """Check if none."""
-        if self.value is None:
-            return True
-        return False
-
 
 class StringItem(Item):
     """String Item class for maven version comparator tasks."""
@@ -72,6 +65,7 @@ class StringItem(Item):
         """Initialize string value of version.
 
         :str_value: part of version supplied as string
+        :followed_by_digit: True if str_version is followed by digit
         """
         self.qualifiers = ["alpha", "beta", "milestone", "rc", "snapshot", "", "sp"]
 
@@ -134,14 +128,6 @@ class StringItem(Item):
         """Return value in string form."""
         return str(self.value)
 
-    @classmethod
-    def is_none(self):
-        """Check if none."""
-        if self.value is release_version_index and self.value is 0:
-            return True
-
-        return False
-
 
 class ListItem(Item):
     """String Item class for maven version comparator tasks."""
@@ -163,12 +149,12 @@ class ListItem(Item):
         """Remove trailing items: 0, "", empty list."""
         red_list = [0, None, ""]
         i = len(self.array_list) - 1
-        while(i >= 0):
-            lastItem = self.array_list[i]
+        while i >= 0:
+            last_item = self.array_list[i]
 
-            if(not isinstance(lastItem, ListItem)):
+            if not isinstance(last_item, ListItem):
 
-                if lastItem.value in red_list:
+                if last_item.value in red_list:
                     self.array_list.pop(i)
                 else:
                     break
@@ -191,7 +177,7 @@ class ListItem(Item):
             left_iter = iter(self.array_list)
             right_iter = iter(item.get_list())
 
-            while(True):
+            while True:
                 l_obj = next(left_iter, None)
                 r_obj = next(right_iter, None)
                 if l_obj is None and r_obj is None:
@@ -211,9 +197,3 @@ class ListItem(Item):
         else:
             raise ValueError("invalid item" + type(item))
 
-    def is_none(self):
-        """Check if none."""
-        if len(self.arraylist) is o:
-            return True
-
-        return False
