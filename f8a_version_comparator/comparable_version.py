@@ -30,12 +30,14 @@ class ComparableVersion():
 
         :version: Version supplied as a string
         """
-        self.parse_version(version)
+        self.version = version
+        if version is not None:
+            self.parse_version()
 
-    def parse_version(self, version):
+    def parse_version(self):
         """Parse version."""
         self.parse_stack = list()
-        version = version.lower()
+        version = self.version.lower()
         ref_list = ListItem()
         self.items = ref_list
         self.parse_stack.append(ref_list)
