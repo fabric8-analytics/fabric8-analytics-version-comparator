@@ -25,7 +25,7 @@ def check_version_order(v1, v2):
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
     res = c.compare_to(c1)
-    assert(res == -1)
+    assert(res == -1), "{} is greater than {}".format(v1, v2)
 
 
 def check_version_equal(v1, v2):
@@ -33,15 +33,12 @@ def check_version_equal(v1, v2):
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
     res = c.compare_to(c1)
-    assert(res == 0)
+    assert(res == 0), "{} is not equal to  {}".format(v1, v2)
 
 
 def test_comparisons():
     """Test function covering all the cases."""
     check_version_order("1-alpha-1", "1.0")
-    check_version_order("1", "2")
-    check_version_order("1.5", "2")
-    check_version_order("1", "2.5")
     check_version_order("1", "2")
     check_version_order("1.5", "2")
     check_version_order("1", "2.5")

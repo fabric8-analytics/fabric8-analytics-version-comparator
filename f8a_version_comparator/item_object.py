@@ -130,7 +130,7 @@ class StringItem(Item):
 
 
 class ListItem(Item):
-    """String Item class for maven version comparator tasks."""
+    """List Item class for maven version comparator tasks."""
 
     def __init__(self):
         """Initialize string value of version."""
@@ -138,8 +138,7 @@ class ListItem(Item):
 
     def add_item(self, item):
         """Add item to array list."""
-        arr_list = self.array_list
-        arr_list.append(item)
+        self.array_list.append(item)
 
     def get_list(self):
         """Get object list items."""
@@ -196,4 +195,3 @@ class ListItem(Item):
             return 0
         else:
             raise ValueError("invalid item" + type(item))
-

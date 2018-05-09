@@ -90,7 +90,7 @@ class ComparableVersion():
         if len(version) > _start_index:
             ref_list.add_item(self.parse_item(_is_digit, version[_start_index:]))
 
-        while len(self.parse_stack) > 0:
+        while self.parse_stack:
             ref_list = self.parse_stack.pop()
             ref_list.normalize()
 
