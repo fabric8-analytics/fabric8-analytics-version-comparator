@@ -115,5 +115,33 @@ def test_comparisons():
     check_version_different_order("6.1-beta", "6.1-alpha")
 
 
+def test_parse_version():
+    """Test the method to parse version."""
+
+    c = ComparableVersion("1")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 1
+    assert str(itemlist[0]) == "1"
+
+    c = ComparableVersion("1.2")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 2
+    assert str(itemlist[0]) == "1"
+    assert str(itemlist[1]) == "2"
+
+    c = ComparableVersion("1-2")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 2
+
+    c = ComparableVersion(".2")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 2
+
+    c = ComparableVersion("-2")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 1
+
+
 if __name__ == '__main__':
     test_comparisons()
+    test_parse_version()
