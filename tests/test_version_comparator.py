@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author: Geetika Batra <gbatra@redhat.com>
+# Author: Geetika Batra <gbatra@redhat.com>, Pavel Tisnovsky <ptisnovs@redhat.com>
 #
 
 """Tests for the class Comparable Version."""
@@ -25,7 +25,15 @@ def check_version_order(v1, v2):
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
     res = c.compare_to(c1)
-    assert(res == -1), "{} is greater than {}".format(v1, v2)
+    assert res == -1, "{} is greater than {}".format(v1, v2)
+
+
+def check_version_different_order(v1, v2):
+    """Check order of versions, the first version must be greater that the second."""
+    c = ComparableVersion(v1)
+    c1 = ComparableVersion(v2)
+    res = c.compare_to(c1)
+    assert res == 1, "{} is less than {}".format(v1, v2)
 
 
 def check_version_equal(v1, v2):
@@ -33,7 +41,7 @@ def check_version_equal(v1, v2):
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
     res = c.compare_to(c1)
-    assert(res == 0), "{} is not equal to  {}".format(v1, v2)
+    assert res == 0, "{} is not equal to  {}".format(v1, v2)
 
 
 def test_comparisons():
@@ -97,6 +105,14 @@ def test_comparisons():
     check_version_order("6.1.0rc3", "6.1.0")
     check_version_order("6.1.0rc3", "6.1H.5-beta")
     check_version_order("6.1.0", "6.1H.5-beta")
+
+    check_version_different_order("8.0.0", "1.0.0")
+    check_version_different_order("6.1.0", "6.1.0rc3")
+    check_version_different_order("6.1H.5-beta", "6.1.0rc3")
+    check_version_different_order("6.1H.5-beta", "6.1.0")
+
+    check_version_different_order("6.1-alpha", "beta")
+    check_version_different_order("6.1-beta", "6.1-alpha")
 
 
 if __name__ == '__main__':
