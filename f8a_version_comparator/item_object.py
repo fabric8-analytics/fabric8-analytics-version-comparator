@@ -57,6 +57,10 @@ class IntegerItem(Item):
         """Return string value of version."""
         return str(self.value)
 
+    def __str__(self):
+        """Return string value of version - Pythonish variant."""
+        return str(self.value)
+
 
 class StringItem(Item):
     """String Item class for maven version comparator tasks."""
@@ -128,6 +132,10 @@ class StringItem(Item):
         """Return value in string form."""
         return str(self.value)
 
+    def __str__(self):
+        """Return string value of version - Pythonish variant."""
+        return str(self.value)
+
 
 class ListItem(Item):
     """List Item class for maven version comparator tasks."""
@@ -184,6 +192,7 @@ class ListItem(Item):
                 result = 0
                 if l_obj is None:
                     if r_obj is None:
+                        # TODO: unreachable code
                         result = 0
                     else:
                         result = -1 * r_obj.compare_to(l_obj)
