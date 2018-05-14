@@ -51,10 +51,14 @@ class IntegerItem(Item):
         if isinstance(item, ListItem):
             return 1
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))
 
     def to_string(self):
         """Return string value of version."""
+        return str(self.value)
+
+    def __str__(self):
+        """Return string value of version - Pythonish variant."""
         return str(self.value)
 
 
@@ -122,10 +126,14 @@ class StringItem(Item):
         if isinstance(item, ListItem):
             return -1
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))
 
     def to_string(self):
         """Return value in string form."""
+        return str(self.value)
+
+    def __str__(self):
+        """Return string value of version - Pythonish variant."""
         return str(self.value)
 
 
@@ -184,6 +192,7 @@ class ListItem(Item):
                 result = 0
                 if l_obj is None:
                     if r_obj is None:
+                        # TODO: unreachable code
                         result = 0
                     else:
                         result = -1 * r_obj.compare_to(l_obj)
@@ -194,4 +203,4 @@ class ListItem(Item):
 
             return 0
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))

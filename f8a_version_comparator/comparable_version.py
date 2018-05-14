@@ -52,7 +52,7 @@ class ComparableVersion():
             if ver_char is ".":
 
                 if _ch == _start_index:
-                    ref_list.add_item(0)
+                    ref_list.add_item(IntegerItem(0))
                 else:
                     ref_list.add_item(self.parse_item(_is_digit, version[_start_index: _ch]))
 
@@ -60,7 +60,7 @@ class ComparableVersion():
 
             elif ver_char == "-":
                 if _ch == _start_index:
-                    ref_list.add_item(0)
+                    ref_list.add_item(IntegerItem(0))
                 else:
                     ref_list.add_item(self.parse_item(_is_digit, version[_start_index: _ch]))
                 _start_index = _ch + 1
