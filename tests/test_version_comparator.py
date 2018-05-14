@@ -117,7 +117,6 @@ def test_comparisons():
 
 def test_parse_version():
     """Test the method to parse version."""
-
     c = ComparableVersion("1")
     itemlist = c.items.get_list()
     assert len(itemlist) == 1
