@@ -51,7 +51,7 @@ class IntegerItem(Item):
         if isinstance(item, ListItem):
             return 1
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))
 
     def to_string(self):
         """Return string value of version."""
@@ -122,7 +122,7 @@ class StringItem(Item):
         if isinstance(item, ListItem):
             return -1
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))
 
     def to_string(self):
         """Return value in string form."""
@@ -194,4 +194,4 @@ class ListItem(Item):
 
             return 0
         else:
-            raise ValueError("invalid item" + type(item))
+            raise ValueError("invalid item" + str(type(item)))
