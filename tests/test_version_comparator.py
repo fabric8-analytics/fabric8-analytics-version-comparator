@@ -17,6 +17,9 @@
 
 """Tests for the class Comparable Version."""
 
+
+import pytest
+
 from f8a_version_comparator.comparable_version import ComparableVersion
 
 
@@ -141,6 +144,28 @@ def test_parse_version():
     assert len(itemlist) == 1
 
 
+def test_parse_item():
+    """Test the method to parse item."""
+    c = ComparableVersion("2")
+
+    p1 = c.parse_item(False, "StringItem")
+    assert p1 is not None
+    assert str(p1) == "StringItem"
+
+    p2 = c.parse_item(True, "0")
+    assert p2 is not None
+    assert str(p2) == "0"
+
+    # try to parse empty string (which is definitely not a number)
+    with pytest.raises(ValueError) as e:
+        p3 = c.parse_item(True, "")
+
+    # try to parse string that does not contain a number
+    with pytest.raises(ValueError) as e:
+        p3 = c.parse_item(True, "foobar")
+
+
 if __name__ == '__main__':
     test_comparisons()
     test_parse_version()
+    test_parse_item()

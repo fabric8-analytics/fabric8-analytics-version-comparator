@@ -1,0 +1,11 @@
+.coverage
+*.pyc
+.env
+env/
+venv/
+cache/
+config.py
+error.log
+*.ipynb
+derby.log
+metastore_db/

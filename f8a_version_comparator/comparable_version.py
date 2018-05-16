@@ -100,6 +100,7 @@ class ComparableVersion():
 
     def parse_item(self, _is_digit, buf):
         """Wrap items in version in respective object class."""
+        # TODO: make this function static (it does not need 'self')
         if _is_digit:
             return IntegerItem(buf)
 
