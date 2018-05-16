@@ -170,6 +170,7 @@ class ListItem(Item):
 
     def compare_to(self, item):
         """Compare two maven versions."""
+        # TODO: reduce cyclomatic complexity
         if item is None:
             if len(self.array_list) == 0:
                 return 0

@@ -36,6 +36,7 @@ class ComparableVersion():
 
     def parse_version(self):
         """Parse version."""
+        # TODO: reduce cyclomatic complexity
         self.parse_stack = list()
         version = self.version.lower()
         ref_list = ListItem()
