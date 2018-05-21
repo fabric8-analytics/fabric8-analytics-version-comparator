@@ -192,10 +192,7 @@ class ListItem(Item):
                     break
                 result = 0
                 if l_obj is None:
-                    if r_obj is None:
-                        # TODO: unreachable code
-                        result = 0
-                    else:
+                    if r_obj is not None:
                         result = -1 * r_obj.compare_to(l_obj)
                 else:
                     result = l_obj.compare_to(r_obj)
