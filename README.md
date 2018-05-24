@@ -1,3 +1,5 @@
+[![Build Status](https://ci.centos.org/buildStatus/icon?job=devtools-fabric8-analytics-version-comparator-fabric8-analytics)](https://ci.centos.org/job/devtools-fabric8-analytics-version-comparator-fabric8-analytics/)
+
 # fabric8-analytics-version-comparator
 
 ## Usage
