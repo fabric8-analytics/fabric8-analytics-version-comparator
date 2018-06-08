@@ -1,6 +1,8 @@
 #!/bin/bash -ex
 chmod +x runtests.sh
 
+COVERAGE_THRESHOLD=90
+
 export PYTHONPATH=`pwd`/fabric8-analytics-version-comparator
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
@@ -22,4 +24,4 @@ function prepare_venv() {
 `which pip3` install pytest-cov
 
 
-PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=f8a_version_comparator/ --cov-report term-missing -vv tests/
+PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=f8a_version_comparator/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
