@@ -1,5 +1,4 @@
 #!/bin/bash -ex
-chmod +x runtests.sh
 
 COVERAGE_THRESHOLD=90
 

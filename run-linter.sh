@@ -1,4 +1,3 @@
-chmod +x run-linter.sh
 directories="f8a_version_comparator tests"
 separate_files="setup.py"
 pass=0
