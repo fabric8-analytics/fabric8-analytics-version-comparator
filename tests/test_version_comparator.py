@@ -119,6 +119,27 @@ def test_eq_operator():
     assert not c3 == None  # noqa - because we really want to use == here
 
 
+def test_lt_operator():
+    """Test the < operator."""
+    version = '1.0.0'
+    c1 = ComparableVersion(version)
+    version = '2.0.0'
+    c2 = ComparableVersion(version)
+    assert c1 < c2
+
+    # ComparableVersion < None
+    assert not c1 < None
+    assert not c2 < None
+
+    version = '2.1.1'
+    c3 = ComparableVersion(version)
+    assert c2 < c3
+    assert c1 < c3
+
+    # ComparableVersion < None
+    assert not c3 < None
+
+
 def test_comparisons():
     """Test function covering all the cases."""
     check_version_order("1-alpha-1", "1.0")
@@ -262,3 +283,4 @@ if __name__ == '__main__':
     test_repr()
     test_str()
     test_eq_operator()
+    test_lt_operator()
