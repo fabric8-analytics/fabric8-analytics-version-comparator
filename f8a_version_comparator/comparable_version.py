@@ -17,31 +17,82 @@
 
 """Module to implement Comparable Version class."""
 
+import typing
+
 from .item_object import IntegerItem
 from .item_object import StringItem
 from .item_object import ListItem
 
 
-class ComparableVersion():
+class ComparableVersion:
     """Class for Comparable Version."""
 
-    def __init__(self, version):
+    def __init__(self, version: str):
         """Initialize comparable version class.
 
         :version: Version supplied as a string
         """
+        if not isinstance(version, str):
+            raise TypeError(
+                "Invalid type {got!r} of argument `version`, expected {expected!r}".format(
+                    got=type(version),
+                    expected=str
+                ))
+
         self.version = version
-        if version is not None:
-            self.parse_version()
+        self.items = self.parse_version()
+
+    def __repr__(self):
+        """Return representation of ComparableVersion object."""
+        return "{cls!s}(version={version!r})".format(
+            cls=self.__class__.__name__,
+            version=self.version
+        )
+
+    def __str__(self):
+        """Return version string held by ComparableVersion object."""
+        return "{version!s}".format(
+            version=self.version
+        )
+
+    def __eq__(self, other):
+        """Compare ComparableVersion objects for equality.
+
+        This rich comparison implies whether self == other
+        """
+        if other is None:
+            return False
+
+        return self.compare_to(other) == 0
+
+    def __lt__(self, other):
+        """Compare ComparableVersion objects.
+
+        This rich comparison implies whether self < other
+        """
+        if other is None:
+            return False
+
+        return self.compare_to(other) == -1
+
+    def __gt__(self, other):
+        """Compare ComparableVersion objects.
+
+        This rich comparison implies whether self > other
+        """
+        if other is None:
+            return True
+
+        return self.compare_to(other) == 1
 
     def parse_version(self):
         """Parse version."""
         # TODO: reduce cyclomatic complexity
-        self.parse_stack = list()
-        version = self.version.lower()
         ref_list = ListItem()
-        self.items = ref_list
-        self.parse_stack.append(ref_list)
+        items = ref_list
+        parse_stack = list()
+        version = self.version.lower()
+        parse_stack.append(ref_list)
         _is_digit = False
 
         _start_index = 0
@@ -69,7 +120,7 @@ class ComparableVersion():
                 temp = ListItem()
                 ref_list.add_item(temp)
                 ref_list = temp
-                self.parse_stack.append(ref_list)
+                parse_stack.append(ref_list)
             elif ver_char.isdigit():
                 if not _is_digit and _ch > _start_index:
                     ref_list.add_item(StringItem(version[_start_index: _ch], True))
@@ -78,7 +129,7 @@ class ComparableVersion():
                     temp = ListItem()
                     ref_list.add_item(temp)
                     ref_list = temp
-                    self.parse_stack.append(ref_list)
+                    parse_stack.append(ref_list)
                 _is_digit = True
             else:
                 if _is_digit and _ch > _start_index:
@@ -87,19 +138,20 @@ class ComparableVersion():
                     temp = ListItem()
                     ref_list.add_item(temp)
                     ref_list = temp
-                    self.parse_stack.append(ref_list)
+                    parse_stack.append(ref_list)
                 _is_digit = False
 
         if len(version) > _start_index:
             ref_list.add_item(self.parse_item(_is_digit, version[_start_index:]))
 
-        while self.parse_stack:
-            ref_list = self.parse_stack.pop()
+        while parse_stack:
+            ref_list = parse_stack.pop()
             ref_list.normalize()
 
-        return self.items.get_list()
+        return items
 
-    def parse_item(self, _is_digit, buf):
+    @staticmethod
+    def parse_item(_is_digit, buf):
         """Wrap items in version in respective object class."""
         # TODO: make this function static (it does not need 'self')
         if _is_digit:
@@ -107,6 +159,17 @@ class ComparableVersion():
 
         return StringItem(buf, False)
 
-    def compare_to(self, obj):
-        """Compare two comparable version objects."""
-        return self.items.compare_to(obj.items)
+    def compare_to(self, obj: typing.Union["ComparableVersion", str]):
+        """Compare two ComparableVersion objects."""
+        if isinstance(obj, ComparableVersion):
+            cmp_result = self.items.compare_to(obj.items)
+        elif isinstance(obj, str):
+            cmp_result = self.items.compare_to(ComparableVersion(obj).items)
+        else:
+            raise TypeError(
+                "Invalid type {got!r} of argument `obj`, expected <{expected}>".format(
+                    got=type(obj),
+                    expected=typing.Union["ComparableVersion", str]
+                ))
+
+        return cmp_result
