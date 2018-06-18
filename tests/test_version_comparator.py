@@ -100,6 +100,25 @@ def test_str():
     assert str(ComparableVersion(version)) == version, "Invalid string conversion."
 
 
+def test_eq_operator():
+    """Test the == operator."""
+    version = '1.0.0'
+    c1 = ComparableVersion(version)
+    c2 = ComparableVersion(version)
+    assert c1 == c2
+
+    # ComparableVersion == None
+    assert not c1 == None  # noqa - because we really want to use == here
+
+    version = '2.5.3-alpha'
+    c3 = ComparableVersion(version)
+    c4 = ComparableVersion(version)
+    assert c3 == c4
+
+    # ComparableVersion == None
+    assert not c3 == None  # noqa - because we really want to use == here
+
+
 def test_comparisons():
     """Test function covering all the cases."""
     check_version_order("1-alpha-1", "1.0")
@@ -242,3 +261,4 @@ if __name__ == '__main__':
     test_parse_item()
     test_repr()
     test_str()
+    test_eq_operator()
