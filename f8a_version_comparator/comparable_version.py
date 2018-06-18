@@ -44,7 +44,7 @@ class ComparableVersion:
 
     def __repr__(self):
         """Return representation of ComparableVersion object."""
-        return "<{cls!s}(version={version!r})>".format(
+        return "{cls!s}(version={version!r})".format(
             cls=self.__class__.__name__,
             version=self.version
         )

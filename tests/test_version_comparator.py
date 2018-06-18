@@ -27,24 +27,77 @@ def check_version_order(v1, v2):
     """Check order of versions."""
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
+
+    # check using `compare_to` method
     res = c.compare_to(c1)
     assert res == -1, "{} is greater than {}".format(v1, v2)
+
+    # check using `compare_to` method and version string
+    res = c.compare_to(v2)
+    assert res == -1, "{} is greater than {}".format(v1, v2)
+
+    # check using rich comparison
+    assert c < c1, "rich comparison: {} is not lower than {}".format(v1, v2)
 
 
 def check_version_different_order(v1, v2):
     """Check order of versions, the first version must be greater that the second."""
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
+
+    # check using `compare_to` method
     res = c.compare_to(c1)
     assert res == 1, "{} is less than {}".format(v1, v2)
+
+    # check using `compare_to` method and version string
+    res = c.compare_to(v2)
+    assert res == 1, "{} is less than {}".format(v1, v2)
+
+    # check using rich comparison
+    assert c > c1, "rich comparison: {} is not greater than {}".format(v1, v2)
 
 
 def check_version_equal(v1, v2):
     """Check if versions are equal."""
     c = ComparableVersion(v1)
     c1 = ComparableVersion(v2)
+
+    # check using `compare_to` method
     res = c.compare_to(c1)
-    assert res == 0, "{} is not equal to  {}".format(v1, v2)
+    assert res == 0, "{} is not equal to {}".format(v1, v2)
+
+    # check using `compare_to` method and version string
+    res = c.compare_to(v2)
+    assert res == 0, "{} is not equal to {}".format(v1, v2)
+
+    # check using rich comparison
+    assert c == c1, "rich comparison: {} is not equal to {}".format(v1, v2)
+
+
+def test_init():
+    """Test ComparableVersion objects `__init__` method."""
+    # should work
+    version = '1.0.0'
+    _ = ComparableVersion(version)
+
+    # both should raise
+    with pytest.raises(TypeError):
+        _ = ComparableVersion(None)
+        _ = ComparableVersion(1.0)
+
+
+def test_repr():
+    """Test ComparableVersion objects `__repr__` method."""
+    version = '1.0.0'
+    expected_repr = "ComparableVersion(version={!r})".format(version)
+
+    assert repr(ComparableVersion(version)) == expected_repr, "Invalid representation."
+
+
+def test_str():
+    """Test ComparableVersion objects `__str__` method."""
+    version = '1.0.0'
+    assert str(ComparableVersion(version)) == version, "Invalid string conversion."
 
 
 def test_comparisons():
@@ -166,6 +219,9 @@ def test_parse_item():
 
 
 if __name__ == '__main__':
+    test_init()
     test_comparisons()
     test_parse_version()
     test_parse_item()
+    test_repr()
+    test_str()
