@@ -171,6 +171,22 @@ def test_comparisons():
     check_version_different_order("6.1-beta", "6.1-alpha")
 
 
+def test_comparisons_wrong_type():
+    """Test function compare_to."""
+    v1 = "1.0.0"
+    c = ComparableVersion(v1)
+    # check the TypeError
+    with pytest.raises(TypeError):
+        c.compare_to(None)
+        c.compare_to(True)
+        c.compare_to(False)
+        c.compare_to([])
+        c.compare_to({})
+        c.compare_to(42)
+        c.compare_to(3.14)
+        c.compare_to(1 + 2j)
+
+
 def test_parse_version():
     """Test the method to parse version."""
     c = ComparableVersion("1")
@@ -221,6 +237,7 @@ def test_parse_item():
 if __name__ == '__main__':
     test_init()
     test_comparisons()
+    test_comparisons_wrong_type()
     test_parse_version()
     test_parse_item()
     test_repr()
