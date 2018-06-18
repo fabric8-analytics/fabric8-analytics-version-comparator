@@ -39,10 +39,8 @@ class ComparableVersion:
                     expected=str
                 ))
 
-        self.items = None
         self.version = version
-
-        self.parse_version()
+        self.items = self.parse_version()
 
     def __repr__(self):
         """Return representation of ComparableVersion object."""
@@ -87,15 +85,11 @@ class ComparableVersion:
 
         return self.compare_to(other) == 1
 
-    def __hash__(self):
-        """Return hashed value of ComparableVersion object."""
-        return super().__hash__()
-
     def parse_version(self):
         """Parse version."""
         # TODO: reduce cyclomatic complexity
         ref_list = ListItem()
-        self.items = ref_list
+        items = ref_list
         parse_stack = list()
         version = self.version.lower()
         parse_stack.append(ref_list)
@@ -154,7 +148,7 @@ class ComparableVersion:
             ref_list = parse_stack.pop()
             ref_list.normalize()
 
-        return self.items.get_list()
+        return items
 
     @staticmethod
     def parse_item(_is_digit, buf):
