@@ -2,7 +2,9 @@
 
 COVERAGE_THRESHOLD=90
 
-export PYTHONPATH=`pwd`/fabric8-analytics-version-comparator
+PYTHONPATH=$(pwd)/fabric8-analytics-version-comparator
+export PYTHONPATH
+
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
     VIRTUALENV=$(which virtualenv)
@@ -19,7 +21,7 @@ function prepare_venv() {
         exit 1
     fi
     pip install -U pip
-    python3 $(which pip3) install -r requirements.txt
+    python3 "$(which pip3)" install -r requirements.txt
 
 }
 
