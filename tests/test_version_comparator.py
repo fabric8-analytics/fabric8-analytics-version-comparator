@@ -134,10 +134,33 @@ def test_lt_operator():
     version = '2.1.1'
     c3 = ComparableVersion(version)
     assert c2 < c3
+    # transitivity check
     assert c1 < c3
 
     # ComparableVersion < None
     assert not c3 < None
+
+
+def test_gt_operator():
+    """Test the > operator."""
+    version = '2.0.0'
+    c1 = ComparableVersion(version)
+    version = '1.0.0'
+    c2 = ComparableVersion(version)
+    assert c1 > c2
+
+    # ComparableVersion < None
+    assert c1 > None
+    assert c2 > None
+
+    version = '2.1.1'
+    c3 = ComparableVersion(version)
+    assert c3 > c2
+    # transitivity check
+    assert c3 > c1
+
+    # ComparableVersion > None
+    assert c3 > None
 
 
 def test_comparisons():
@@ -284,3 +307,4 @@ if __name__ == '__main__':
     test_str()
     test_eq_operator()
     test_lt_operator()
+    test_gt_operator()
