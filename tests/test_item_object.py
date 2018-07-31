@@ -19,7 +19,7 @@
 
 
 import pytest
-from f8a_version_comparator.item_object import *
+from f8a_version_comparator.item_object import IntegerItem, StringItem, ListItem
 
 
 def test_integer_item():
@@ -36,14 +36,23 @@ def test_integer_item_constructor():
     # try to parse string that contain float value, not integer one
     with pytest.raises(ValueError) as e:
         i1 = IntegerItem("-1.2")
+        assert i1 is not None
+
+    assert e is not None
 
     # try to parse empty string (which is definitely not a number)
     with pytest.raises(ValueError) as e:
         i2 = IntegerItem("")
+        assert i2 is not None
+
+    assert e is not None
 
     # try to parse string that does not contain a number
     with pytest.raises(ValueError) as e:
         i3 = IntegerItem("foobar")
+        assert i3 is not None
+
+    assert e is not None
 
 
 def test_integer_item_compare_to():
@@ -64,6 +73,8 @@ def test_integer_item_compare_to():
     # try to compare integer with uncomparable item
     with pytest.raises(ValueError) as e:
         i1.compare_to("string")
+
+    assert e is not None
 
 
 def test_string_item():
@@ -124,6 +135,8 @@ def test_string_item_compare_to():
     with pytest.raises(ValueError) as e:
         i1.compare_to("string")
 
+    assert e is not None
+
 
 def test_list_item_compare_to():
     """Test the ListItem.compare_to method."""
@@ -141,6 +154,8 @@ def test_list_item_compare_to():
     # try to compare list with uncomparable item
     with pytest.raises(ValueError) as e:
         i1.compare_to("string")
+
+    assert e is not None
 
 
 if __name__ == '__main__':

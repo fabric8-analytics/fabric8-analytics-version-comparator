@@ -83,7 +83,9 @@ def test_init():
     # both should raise
     with pytest.raises(TypeError):
         _ = ComparableVersion(None)
+        assert _ is not None
         _ = ComparableVersion(1.0)
+        assert _ is not None
 
 
 def test_repr():
@@ -289,12 +291,14 @@ def test_parse_item():
     assert str(p2) == "0"
 
     # try to parse empty string (which is definitely not a number)
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(ValueError):
         p3 = c.parse_item(True, "")
+        assert p3 is not None
 
     # try to parse string that does not contain a number
-    with pytest.raises(ValueError) as e:
+    with pytest.raises(ValueError):
         p3 = c.parse_item(True, "foobar")
+        assert p3 is not None
 
 
 if __name__ == '__main__':
