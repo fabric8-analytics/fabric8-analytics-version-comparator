@@ -14,6 +14,7 @@ prep() {
     yum -y update
     yum -y install git which epel-release python34-virtualenv
     yum -y install python34-pip
+    yum -y install gcc
     pip3 install virtualenv
 }
 
