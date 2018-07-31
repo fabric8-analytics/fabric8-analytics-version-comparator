@@ -24,5 +24,5 @@ class Item(metaclass=ABCMeta):
     """Base class for maven version comparator tasks."""
 
     @abstractmethod
-    def compare_to(self, item):
+    def compare_to(self, _item):
         """Compare two maven versions."""
