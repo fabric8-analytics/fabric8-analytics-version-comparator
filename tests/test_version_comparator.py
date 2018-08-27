@@ -121,6 +121,27 @@ def test_eq_operator():
     assert not c3 == None  # noqa - because we really want to use == here
 
 
+def test_ne_operator():
+    """Test the != operator."""
+    version1 = '1.0.0'
+    version2 = '2.0.0'
+    c1 = ComparableVersion(version1)
+    c2 = ComparableVersion(version2)
+    assert c1 != c2
+
+    # ComparableVersion != None
+    assert c1 != None  # noqa - because we really want to use != here
+
+    version1 = '2.5.3-alpha'
+    version2 = '1.5.3-alpha'
+    c3 = ComparableVersion(version1)
+    c4 = ComparableVersion(version2)
+    assert c3 != c4
+
+    # ComparableVersion != None
+    assert c3 != None  # noqa - because we really want to use != here
+
+
 def test_lt_operator():
     """Test the < operator."""
     version = '1.0.0'
@@ -143,6 +164,20 @@ def test_lt_operator():
     assert not c3 < None
 
 
+def test_le_operator():
+    """Test the <= operator."""
+    c1 = ComparableVersion('1.0.0')
+    c2 = ComparableVersion('2.0.0')
+    assert c1 <= c2
+
+    # ComparableVersion <= None
+    assert not c1 <= None
+    assert not c2 <= None
+
+    c3 = ComparableVersion('2.0.0')
+    assert c2 <= c3
+
+
 def test_gt_operator():
     """Test the > operator."""
     version = '2.0.0'
@@ -163,6 +198,20 @@ def test_gt_operator():
 
     # ComparableVersion > None
     assert c3 > None
+
+
+def test_ge_operator():
+    """Test the >= operator."""
+    c1 = ComparableVersion('2.0.0')
+    c2 = ComparableVersion('1.0.0')
+    assert c1 >= c2
+
+    # ComparableVersion >= None
+    assert c1 >= None
+    assert c2 >= None
+
+    c3 = ComparableVersion('1.0.0')
+    assert c3 >= c2
 
 
 def test_comparisons():

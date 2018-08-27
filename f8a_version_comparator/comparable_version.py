@@ -65,6 +65,16 @@ class ComparableVersion:
 
         return self.compare_to(other) == 0
 
+    def __ne__(self, other):
+        """Compare ComparableVersion objects for equality.
+
+        This rich comparison implies whether self != other
+        """
+        if other is None:
+            return True
+
+        return self.compare_to(other) != 0
+
     def __lt__(self, other):
         """Compare ComparableVersion objects.
 
@@ -75,6 +85,16 @@ class ComparableVersion:
 
         return self.compare_to(other) == -1
 
+    def __le__(self, other):
+        """Compare ComparableVersion objects.
+
+        This rich comparison implies whether self <= other
+        """
+        if other is None:
+            return False
+
+        return self.compare_to(other) <= 0
+
     def __gt__(self, other):
         """Compare ComparableVersion objects.
 
@@ -84,6 +104,16 @@ class ComparableVersion:
             return True
 
         return self.compare_to(other) == 1
+
+    def __ge__(self, other):
+        """Compare ComparableVersion objects.
+
+        This rich comparison implies whether self >= other
+        """
+        if other is None:
+            return True
+
+        return self.compare_to(other) >= 0
 
     def parse_version(self):
         """Parse version."""
