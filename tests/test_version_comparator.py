@@ -30,10 +30,12 @@ def check_version_order(v1, v2):
 
     # check using `compare_to` method
     res = c.compare_to(c1)
+    assert res is not None
     assert res == -1, "{} is greater than {}".format(v1, v2)
 
     # check using `compare_to` method and version string
     res = c.compare_to(v2)
+    assert res is not None
     assert res == -1, "{} is greater than {}".format(v1, v2)
 
     # check using rich comparison
@@ -47,10 +49,12 @@ def check_version_different_order(v1, v2):
 
     # check using `compare_to` method
     res = c.compare_to(c1)
+    assert res is not None
     assert res == 1, "{} is less than {}".format(v1, v2)
 
     # check using `compare_to` method and version string
     res = c.compare_to(v2)
+    assert res is not None
     assert res == 1, "{} is less than {}".format(v1, v2)
 
     # check using rich comparison
@@ -64,10 +68,12 @@ def check_version_equal(v1, v2):
 
     # check using `compare_to` method
     res = c.compare_to(c1)
+    assert res is not None
     assert res == 0, "{} is not equal to {}".format(v1, v2)
 
     # check using `compare_to` method and version string
     res = c.compare_to(v2)
+    assert res is not None
     assert res == 0, "{} is not equal to {}".format(v1, v2)
 
     # check using rich comparison
@@ -78,7 +84,9 @@ def test_init():
     """Test ComparableVersion objects `__init__` method."""
     # should work
     version = '1.0.0'
-    _ = ComparableVersion(version)
+    v = ComparableVersion(version)
+    # actually should not happen for proper constructor
+    assert v is not None
 
     # both should raise
     with pytest.raises(TypeError):
@@ -289,6 +297,7 @@ def test_comparisons_wrong_type():
     """Test function compare_to."""
     v1 = "1.0.0"
     c = ComparableVersion(v1)
+
     # check the TypeError
     with pytest.raises(TypeError):
         c.compare_to(None)

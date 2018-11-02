@@ -60,6 +60,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self == other
         """
+        # don't call compare_to(None)
         if other is None:
             return False
 
@@ -70,6 +71,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self != other
         """
+        # don't call compare_to(None)
         if other is None:
             return True
 
@@ -80,6 +82,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self < other
         """
+        # don't call compare_to(None)
         if other is None:
             return False
 
@@ -90,6 +93,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self <= other
         """
+        # don't call compare_to(None)
         if other is None:
             return False
 
@@ -100,6 +104,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self > other
         """
+        # don't call compare_to(None)
         if other is None:
             return True
 
@@ -110,6 +115,7 @@ class ComparableVersion:
 
         This rich comparison implies whether self >= other
         """
+        # don't call compare_to(None)
         if other is None:
             return True
 

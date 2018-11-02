@@ -28,6 +28,7 @@ def test_integer_item():
     assert str(i1) == "1"
 
     # actually the to_string() method is not needed much
+    # it should behave the same as the str() standard function
     assert str(i1) == i1.to_string()
 
 
@@ -38,6 +39,7 @@ def test_integer_item_constructor():
         i1 = IntegerItem("-1.2")
         assert i1 is not None
 
+    # NOTE: e is visible outside the with block
     assert e is not None
 
     # try to parse empty string (which is definitely not a number)
@@ -45,6 +47,7 @@ def test_integer_item_constructor():
         i2 = IntegerItem("")
         assert i2 is not None
 
+    # NOTE: e is visible outside the with block
     assert e is not None
 
     # try to parse string that does not contain a number
@@ -52,6 +55,7 @@ def test_integer_item_constructor():
         i3 = IntegerItem("foobar")
         assert i3 is not None
 
+    # NOTE: e is visible outside the with block
     assert e is not None
 
 
@@ -59,6 +63,7 @@ def test_integer_item_compare_to():
     """Test the IntegerItem.compare_to method."""
     i1 = IntegerItem("1")
     i2 = IntegerItem("2")
+    # compare_to returns 0, 1, or -1
     assert i1.compare_to(i2) == -1
     assert i2.compare_to(i1) == 1
 
