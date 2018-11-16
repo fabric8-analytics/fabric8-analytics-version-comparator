@@ -33,3 +33,5 @@ $(which pip3) install pytest-cov
 
 PYTHONDONTWRITEBYTECODE=1 python3 "$(which pytest)" --cov=f8a_version_comparator/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
+
+`which codecov` --token=81880284-8c69-4163-a650-5ae26f34b0b3
