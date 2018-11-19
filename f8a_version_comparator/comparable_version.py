@@ -198,8 +198,10 @@ class ComparableVersion:
     def compare_to(self, obj: typing.Union["ComparableVersion", str]):
         """Compare two ComparableVersion objects."""
         if isinstance(obj, ComparableVersion):
+            # compare two objects of the same type
             cmp_result = self.items.compare_to(obj.items)
         elif isinstance(obj, str):
+            # compare against string
             cmp_result = self.items.compare_to(ComparableVersion(obj).items)
         else:
             raise TypeError(
