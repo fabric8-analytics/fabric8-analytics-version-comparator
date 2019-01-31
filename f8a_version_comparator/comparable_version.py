@@ -137,7 +137,7 @@ class ComparableVersion:
 
             ver_char = version[_ch]
 
-            if ver_char is ".":
+            if ver_char == ".":
 
                 if _ch == _start_index:
                     ref_list.add_item(IntegerItem(0))

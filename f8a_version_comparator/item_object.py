@@ -196,7 +196,7 @@ class ListItem(Item):
                         result = -1 * r_obj.compare_to(l_obj)
                 else:
                     result = l_obj.compare_to(r_obj)
-                if result is not 0:
+                if result != 0:
                     return result
 
             return 0
