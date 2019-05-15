@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="f8a_version_comparator tests"
+directories="f8a_version_comparator tests tools"
 separate_files="setup.py"
 
 pass=0
