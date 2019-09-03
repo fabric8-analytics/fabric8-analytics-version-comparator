@@ -1,5 +1,9 @@
 #!/bin/bash -ex
 
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+pushd "${SCRIPT_DIR}/.." > /dev/null
+
 COVERAGE_THRESHOLD=90
 
 PYTHONPATH=$(pwd)/fabric8-analytics-version-comparator
@@ -42,3 +46,4 @@ PYTHONDONTWRITEBYTECODE=1 python3 "$(which pytest)" --cov=f8a_version_comparator
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
 
 `which codecov` --token=81880284-8c69-4163-a650-5ae26f34b0b3
+popd > /dev/null
