@@ -1,12 +1,16 @@
 #!/bin/bash
 
+# Script to check all Python scripts for PEP-8 issues
+
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 IFS=$'\n'
 
 # list of directories with sources to check
-directories=$(cat directories.txt)
+directories=$(cat ${SCRIPT_DIR}/directories.txt)
 
 # list of separate files to check
-separate_files=$(cat files.txt)
+separate_files=$(cat ${SCRIPT_DIR}/files.txt)
 
 pass=0
 fail=0
@@ -14,19 +18,21 @@ fail=0
 function prepare_venv() {
     VIRTUALENV="$(which virtualenv)"
     if [ $? -eq 1 ]; then
-        # python34 which is in CentOS does not have virtualenv binary
+        # python36 which is in CentOS does not have virtualenv binary
         VIRTUALENV="$(which virtualenv-3)"
     fi
 
     ${VIRTUALENV} -p python3 venv && source venv/bin/activate && python3 "$(which pip3)" install vulture
 }
 
+pushd "${SCRIPT_DIR}/.."
+
 # run the vulture for all files that are provided in $1
 function check_files() {
     for source in $1
     do
         echo "$source"
-        vulture --min-confidence 90 "$source" whitelist
+        vulture --min-confidence 90 "$source" "${SCRIPT_DIR/whitelist}"
         if [ $? -eq 0 ]
         then
             echo "    Pass"
@@ -68,6 +74,8 @@ echo "----------------------------------------------------"
 echo
 
 check_files "$separate_files"
+
+popd
 
 if [ $fail -eq 0 ]
 then
