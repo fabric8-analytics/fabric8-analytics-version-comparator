@@ -1,3 +1,2 @@
 codecov
 pytest
-pytest[cov]
