@@ -30,17 +30,12 @@ function prepare_venv() {
         exit 1
     fi
     pip install -U pip
-    python3 "$(which pip3)" install -r requirements.txt
-
+    python3 "$(which pip3)" install -r tests/requirements.txt
 }
 
 check_python_version
 
 [ "$NOVENV" == "1" ] || prepare_venv || exit 1
-
-$(which pip3) install pytest
-$(which pip3) install pytest-cov
-
 
 PYTHONDONTWRITEBYTECODE=1 python3 "$(which pytest)" --cov=f8a_version_comparator/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv tests/
 printf "%stests passed%s\n\n" "${GREEN}" "${NORMAL}"
