@@ -207,6 +207,31 @@ def test_gt_operator():
     # ComparableVersion > None
     assert c3 > None
 
+    gt_data = [
+        {'v1': '1.1.1', 'v2': '1.1', },
+        {'v1': '1.1', 'v2': '1.0.9', },
+        {'v1': '1.5.0.2', 'v2': '1.5.0.1', },
+        {'v1': '2.0.rc1', 'v2': '2.0.rc0', },
+        {'v1': '11.5.4.0', 'v2': '10.4.5', },
+        {'v1': '11.5.4.3', 'v2': '11.5.4.2', },
+        {'v1': '1.5-2.RELEASE', 'v2': '1.5-1', },
+        {'v1': '1.5-2.RELEASE', 'v2': '1.5-1.RELEASE', },
+        {'v1': '1.5.2.RELEASE', 'v2': '1.5.1', },
+        {'v1': '1.5.2.RELEASE', 'v2': '1.5.1.RELEASE', },
+        {'v1': '0.0.0-20201203092726-db298ee30ce6', 'v2': '0.0.0-20201203092725-db298ee30ce6', },
+        {'v1': '1.0.0-20201203092720-db298ee30ce6', 'v2': '0.0.0-20201203092725-db298ee30ce6', },
+        {'v1': '1.4.1', 'v2': 'upstream/1.0.1', },
+        {'v1': '1.40.1', 'v2': 'kubernetes-1.14.0-beta.1', },
+    ]
+    invalid_c = ComparableVersion('-1')
+    for d in gt_data:
+        c1 = ComparableVersion(d['v1'])
+        c2 = ComparableVersion(d['v2'])
+        assert c1 > c2
+
+        # Version must be greated than invalid
+        assert c1 > invalid_c
+
 
 def test_ge_operator():
     """Test the >= operator."""
@@ -280,6 +305,8 @@ def test_comparisons():
     check_version_equal("1m3", "1MileStone3")
     check_version_equal("1m3", "1MILESTONE3")
 
+    check_version_equal("-1", "-1")
+
     check_version_order("6.1.0rc3", "6.1.0")
     check_version_order("6.1.0rc3", "6.1H.5-beta")
     check_version_order("6.1.0", "6.1H.5-beta")
@@ -334,6 +361,105 @@ def test_parse_version():
     c = ComparableVersion("-2")
     itemlist = c.items.get_list()
     assert len(itemlist) == 1
+
+    c = ComparableVersion("-1")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 1
+    assert len(itemlist[0].get_list()) == 1
+    assert str(itemlist[0].get_list()[0]) == "1"
+
+    c = ComparableVersion("INVALID_VERSION")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 1
+    assert itemlist[0].to_string() == "invalid_version"
+
+    c = ComparableVersion("upstream/1.0.3")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 2
+    assert itemlist[0].to_string() == "upstream/"
+    assert len(itemlist[1].get_list()) == 3
+    assert itemlist[1].get_list()[0].to_string() == "1"
+    assert itemlist[1].get_list()[1].to_string() == "0"
+    assert itemlist[1].get_list()[2].to_string() == "3"
+
+    c = ComparableVersion("kubernetes-1.14.0-beta.1")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 2
+    assert itemlist[0].to_string() == "kubernetes"
+    assert len(itemlist[1].get_list()) == 3
+    assert itemlist[1].get_list()[0].to_string() == "1"
+    assert itemlist[1].get_list()[1].to_string() == "14"
+    assert len(itemlist[1].get_list()[2].get_list()) == 2
+    assert itemlist[1].get_list()[2].get_list()[0].to_string() == "beta"
+    assert itemlist[1].get_list()[2].get_list()[1].to_string() == "1"
+
+    c = ComparableVersion("1.5.2.RELEASE")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 4
+    assert itemlist[0].to_string() == "1"
+    assert itemlist[1].to_string() == "5"
+    assert itemlist[2].to_string() == "2"
+    assert itemlist[3].to_string() == "release"
+
+    c = ComparableVersion("1.5-2.RELEASE")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 3
+    assert itemlist[0].to_string() == "1"
+    assert itemlist[1].to_string() == "5"
+    assert len(itemlist[2].get_list()) == 2
+    assert itemlist[2].get_list()[0].to_string() == "2"
+    assert itemlist[2].get_list()[1].to_string() == "release"
+
+    c = ComparableVersion("2.0.rc1")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 4
+    assert itemlist[0].to_string() == "2"
+    assert itemlist[1].to_string() == "0"
+    assert itemlist[2].to_string() == "rc"
+    assert len(itemlist[3].get_list()) == 1
+    assert itemlist[3].get_list()[0].to_string() == "1"
+
+    c = ComparableVersion("11.5.4.0")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 3
+    assert itemlist[0].to_string() == "11"
+    assert itemlist[1].to_string() == "5"
+    assert itemlist[2].to_string() == "4"
+
+    c = ComparableVersion("1.6.8-20201203092725-db298ee30ce6")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 4
+    assert itemlist[0].to_string() == "1"
+    assert itemlist[1].to_string() == "6"
+    assert itemlist[2].to_string() == "8"
+    assert len(itemlist[3].get_list()) == 2
+    assert itemlist[3].get_list()[0].to_string() == "20201203092725"
+    assert itemlist[3].get_list()[1].get_list()[0].to_string() == "db"
+    assert itemlist[3].get_list()[1].get_list()[1].get_list()[0].to_string() == "298"
+    assert itemlist[3].get_list()[1].get_list()[1].get_list()[1].get_list()[0].to_string() == "ee"
+
+    sub_list = itemlist[3].get_list()[1].get_list()[1].get_list()[1].get_list()[1]
+    assert sub_list.get_list()[0].to_string() == "30"
+    assert sub_list.get_list()[1].get_list()[0].to_string() == "ce"
+    assert sub_list.get_list()[1].get_list()[1].get_list()[0].to_string() == "6"
+
+    c = ComparableVersion("1.6.0-20201203092725-db1234567890")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 3
+    assert itemlist[0].to_string() == "1"
+    assert itemlist[1].to_string() == "6"
+    assert len(itemlist[2].get_list()) == 2
+    assert itemlist[2].get_list()[0].to_string() == "20201203092725"
+    assert itemlist[2].get_list()[1].get_list()[0].to_string() == "db"
+    assert itemlist[2].get_list()[1].get_list()[1].get_list()[0].to_string() == "1234567890"
+
+    c = ComparableVersion("0.0.0-20201203092725-db1234567890")
+    itemlist = c.items.get_list()
+    assert len(itemlist) == 1
+    assert len(itemlist[0].get_list()) == 2
+    assert itemlist[0].get_list()[0].to_string() == "20201203092725"
+    assert itemlist[0].get_list()[1].get_list()[0].to_string() == "db"
+    assert itemlist[0].get_list()[1].get_list()[1].get_list()[0].to_string() == "1234567890"
 
 
 def test_parse_item():
